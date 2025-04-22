@@ -1,136 +1,294 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const JapaneseMenuApp());
+  runApp(const MaterialApp(home: FoodMenuApp()));
 }
 
-class JapaneseMenuApp extends StatelessWidget {
-  const JapaneseMenuApp({super.key});
+class FoodMenuApp extends StatefulWidget {
+  const FoodMenuApp({super.key});
+
+  @override
+  State<FoodMenuApp> createState() => _FoodMenuAppState();
+}
+
+class _FoodMenuAppState extends State<FoodMenuApp> {
+  final List<Map<String, dynamic>> categories = [
+    {
+      'name': 'Todos',
+      'image': 'https://cdn-icons-png.flaticon.com/512/1539/1539414.png',
+    },
+    {
+      'name': 'Frio',
+      'image':
+          'https://cdn-icons-png.flaticon.com/512/2252/2252075.png',
+    },
+    {
+      'name': 'Quente',
+      'image':
+          'https://cdn-icons-png.flaticon.com/512/2388/2388080.png',
+    },
+    {
+      'name': 'Sobremesa',
+      'image':
+          'https://cdn-icons-png.flaticon.com/512/5347/5347946.png',
+    },
+  ];
+
+  final List<Map<String, dynamic>> dishes = [
+    {
+      'name': 'Sushi Especial',
+      'image':
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMlZRME_rQCm6YKPlF0JrCTxDdWloEQG0L5w&s',
+      'category': 'Frio',
+    },
+    {
+      'name': 'Ramen Tradicional',
+      'image':
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLQxLm2PI5YnBZFuK-V8K6hDKFkrMTI0uDoA&s',
+      'category': 'Quente',
+    },
+    {
+      'name': 'Mochi de Morango',
+      'image':
+          'https://thumbs.dreamstime.com/b/diafragma-de-morango-ichigo-mochi-japon%C3%AAs-daifuku-com-feij%C3%A3o-vermelho-281002960.jpg',
+      'category': 'Sobremesa',
+    },
+  ];
+
+  String selectedCategory = 'Todos';
+  String? selectedDish;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Cardápio Japonês',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
-      home: const MenuScreen(),
-    );
-  }
-}
-
-class MenuItem {
-  final String imageUrl;
-  final String name;
-  final String description;
-  final double price;
-
-  MenuItem({
-    required this.imageUrl,
-    required this.name,
-    required this.description,
-    required this.price,
-  });
-}
-
-class MenuScreen extends StatelessWidget {
-  const MenuScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final List<MenuItem> menuItems = [
-      MenuItem(
-        imageUrl:
-            'https://upload.wikimedia.org/wikipedia/commons/6/60/Sushi_platter.jpg',
-        name: 'Sushi',
-        description: 'Arroz temperado com peixe cru.',
-        price: 37.90,
-      ),
-      MenuItem(
-        imageUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm6ixEqTdd-zyAOlYtYncziDJA6MRxO3gapA&s',
-        name: 'Ramen',
-        description: 'Sopa de macarrão com carne e ovo.',
-        price: 25.90,
-      ),
-      MenuItem(
-        imageUrl:
-            'https://assets.tmecosys.com/image/upload/t_web_rdp_recipe_584x480/img/recipe/ras/Assets/A44C84BF-1115-46E1-A052-33EB28F63806/Derivates/dc78ebca-e5cb-4875-bec1-4c46cc693374.jpg',
-        name: 'Mochi',
-        description: 'Bolinho de arroz glutinoso.',
-        price: 12.90,
-      ),
-    ];
+    List<Map<String, dynamic>> filteredDishes = selectedCategory == 'Todos'
+        ? dishes
+        : dishes.where((dish) => dish['category'] == selectedCategory).toList();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cardápio Japonês'),
+        centerTitle: true,
+        backgroundColor: Colors.deepOrange,
       ),
-      body: ListView.builder(
-        itemCount: menuItems.length,
-        itemBuilder: (context, index) {
-          final menuItem = menuItems[index];
-          return Card(
-            margin: const EdgeInsets.all(8.0),
-            elevation: 3.0,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            buildCategoryCards(),
+            const SizedBox(height: 20),
+            Expanded(
+              child: ListView(
                 children: [
-                  SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: Image.network(
-                      menuItem.imageUrl,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const SizedBox(width: 16.0),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          menuItem.name,
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+                  ...filteredDishes.map((dish) => GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedDish = dish['name'];
+                          });
+                        },
+                        child: Card(
+                          elevation: 4,
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        ),
-                        const SizedBox(height: 4.0),
-                        Text(
-                          menuItem.description,
-                          style: const TextStyle(fontSize: 14.0),
-                        ),
-                        const SizedBox(height: 8.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'R\$ ${menuItem.price.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red,
+                          child: ListTile(
+                            leading: SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  dish['image'],
+                                  width: 60,
+                                  height: 60,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (BuildContext context,
+                                      Object exception,
+                                      StackTrace? stackTrace) {
+                                    return const Icon(Icons.error);
+                                  },
+                                ),
                               ),
                             ),
-                            ElevatedButton(
+                            title: Text(
+                              dish['name'],
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            subtitle:
+                                Text('Categoria: ${dish['category']}'),
+                            trailing: ElevatedButton(
                               onPressed: () {
-                                print('Adicionado: ${menuItem.name}');
+                                setState(() {
+                                  selectedDish = dish['name'];
+                                });
                               },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orange,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
                               child: const Text('Adicionar'),
                             ),
-                          ],
+                          ),
                         ),
-                      ],
+                      )),
+                  if (selectedDish != null) buildNutritionTable(selectedDish!),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildCategoryCards() {
+    return SizedBox(
+      height: 100,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        itemBuilder: (_, index) {
+          final category = categories[index];
+          final isSelected = category['name'] == selectedCategory;
+
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedCategory = category['name'];
+                selectedDish = null;
+              });
+            },
+            child: Container(
+              width: 90,
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: isSelected ? Colors.orange[100] : Colors.white,
+                border: Border.all(
+                    color: isSelected ? Colors.deepOrange : Colors.grey.shade300),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                children: [
+                  Image.network(category['image'],
+                      width: 40,
+                      height: 40,
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                    return const Icon(Icons.error);
+                  }),
+                  const SizedBox(height: 8),
+                  Text(
+                    category['name'],
+                    style: TextStyle(
+                      fontWeight:
+                          isSelected ? FontWeight.bold : FontWeight.normal,
+                      fontSize: 12,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget buildNutritionTable(String dishName) {
+    switch (dishName) {
+      case 'Sushi Especial':
+        return buildStyledTable(
+          title: 'Sushi Especial',
+          description:
+              'Deliciosos pedaços de sushi com peixe fresco, arroz e alga nori.',
+          calories: '250 kcal',
+          protein: '15g',
+          carbs: '30g',
+        );
+      case 'Ramen Tradicional':
+        return buildStyledTable(
+          title: 'Ramen Tradicional',
+          description:
+              'Sopa quente com macarrão, carne, ovo cozido e vegetais, perfeita para aquecer o corpo.',
+          calories: '450 kcal',
+          protein: '20g',
+          carbs: '50g',
+        );
+      case 'Mochi de Morango':
+        return buildStyledTable(
+          title: 'Mochi de Morango',
+          description:
+              'Sobremesa japonesa feita de arroz glutinoso com recheio de morango fresco.',
+          calories: '180 kcal',
+          protein: '3g',
+          carbs: '35g',
+        );
+      default:
+        return const SizedBox.shrink();
+    }
+  }
+
+  Widget buildStyledTable({
+    required String title,
+    required String description,
+    required String calories,
+    required String protein,
+    required String carbs,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 20),
+        Text(
+          'Detalhes do Prato: $title',
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          description,
+          style: const TextStyle(fontSize: 16),
+        ),
+        const SizedBox(height: 20),
+        Text(
+          'Tabela Nutricional',
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.orange),
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.orange.shade50,
+          ),
+          child: Column(
+            children: [
+              buildRow(Icons.local_fire_department, 'Calorias', calories),
+              buildRow(Icons.fitness_center, 'Proteínas', protein),
+              buildRow(Icons.grain, 'Carboidratos', carbs),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildRow(IconData icon, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      child: Row(
+        children: [
+          Icon(icon, color: Colors.deepOrange),
+          const SizedBox(width: 10),
+          Expanded(child: Text(label, style: const TextStyle(fontSize: 16))),
+          Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
+        ],
       ),
     );
   }
