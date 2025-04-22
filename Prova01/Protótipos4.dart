@@ -40,18 +40,22 @@ class _FoodMenuAppState extends State<FoodMenuApp> {
       'image':
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMlZRME_rQCm6YKPlF0JrCTxDdWloEQG0L5w&s',
       'category': 'Frio',
+      'price': 28.90,  // Adicionando o preço do prato
+      'discount': 15,  // Adicionando o desconto de 15%
     },
     {
       'name': 'Ramen Tradicional',
       'image':
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLQxLm2PI5YnBZFuK-V8K6hDKFkrMTI0uDoA&s',
       'category': 'Quente',
+      'price': 35.90,
     },
     {
       'name': 'Mochi de Morango',
       'image':
           'https://thumbs.dreamstime.com/b/diafragma-de-morango-ichigo-mochi-japon%C3%AAs-daifuku-com-feij%C3%A3o-vermelho-281002960.jpg',
       'category': 'Sobremesa',
+      'price': 19.90,
     },
   ];
 
@@ -79,63 +83,88 @@ class _FoodMenuAppState extends State<FoodMenuApp> {
             Expanded(
               child: ListView(
                 children: [
-                  ...filteredDishes.map((dish) => GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedDish = dish['name'];
-                          });
-                        },
-                        child: Card(
-                          elevation: 4,
-                          margin: const EdgeInsets.symmetric(vertical: 10),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                  ...filteredDishes.map((dish) {
+                    bool hasDiscount = dish['discount'] != null;
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedDish = dish['name'];
+                        });
+                      },
+                      child: Card(
+                        elevation: 4,
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ListTile(
+                          leading: SizedBox(
+                            width: 60,
+                            height: 60,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                dish['image'],
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.cover,
+                                errorBuilder: (BuildContext context,
+                                    Object exception,
+                                    StackTrace? stackTrace) {
+                                  return const Icon(Icons.error);
+                                },
+                              ),
+                            ),
                           ),
-                          child: ListTile(
-                            leading: SizedBox(
-                              width: 60,
-                              height: 60,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.network(
-                                  dish['image'],
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (BuildContext context,
-                                      Object exception,
-                                      StackTrace? stackTrace) {
-                                    return const Icon(Icons.error);
-                                  },
+                          title: Row(
+                            children: [
+                              Text(
+                                dish['name'],
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
                                 ),
                               ),
-                            ),
-                            title: Text(
-                              dish['name'],
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                            subtitle:
-                                Text('Categoria: ${dish['category']}'),
-                            trailing: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  selectedDish = dish['name'];
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.orange,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                              if (hasDiscount)
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      '${dish['discount']}% OFF',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
                                 ),
+                            ],
+                          ),
+                          subtitle: Text('Preço: R\$ ${dish['price'].toStringAsFixed(2)}'),
+                          trailing: ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                selectedDish = dish['name'];
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.orange,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              child: const Text('Adicionar'),
                             ),
+                            child: const Text('Adicionar'),
                           ),
                         ),
-                      )),
+                      ),
+                    );
+                  }).toList(),
                   if (selectedDish != null) buildNutritionTable(selectedDish!),
                 ],
               ),
