@@ -4,7 +4,7 @@
 - Rafael da Silva Modesto
 - Cristopher Oliveira Modesto
 
-Tutorial: Calculadora de IMC
+## Tutorial: Calculadora de IMC
 ## 1. Scaffold
 
 **Descrição**:  
@@ -199,7 +199,7 @@ Container(
 )
 ```
 
-Tutorial: Perfil de Artista Musical
+## Tutorial: Perfil de Artista Musical
 
 ## 1. **MaterialApp**
 
