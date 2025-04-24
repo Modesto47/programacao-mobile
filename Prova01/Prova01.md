@@ -4,7 +4,7 @@
 - Rafael da Silva Modesto
 - Cristopher Oliveira Modesto
 
-#Calculadora de IMC
+Tutorial: Calculadora de IMC
 ## 1. Scaffold
 
 **Descrição**:  
@@ -197,5 +197,249 @@ Container(
     ],
   ),
 )
+```
 
-#
+Tutorial: Perfil de Artista Musical
+
+## 1. **MaterialApp**
+
+### Descrição
+O `MaterialApp` é um widget fundamental no Flutter que configura o estilo visual da aplicação e as configurações gerais, como tema, título e páginas iniciais. Ele também é responsável pela navegação da aplicação.
+
+### Aplicações
+Usado em praticamente todas as aplicações Flutter, o `MaterialApp` cria a base para a estrutura visual do app, como temas, rotas e controles de navegação.
+
+### Como usar
+```dart
+MaterialApp(
+  title: 'Spotify Clone',
+  theme: ThemeData.dark(),
+  debugShowCheckedModeBanner: false,
+  home: const SpotifyHomePage(),
+);
+```
+
+## 2. **Scaffold**
+
+### Descrição
+O `Scaffold` é um widget usado para criar a estrutura visual básica de uma tela, com opções como AppBar, Drawer, BottomNavigationBar e o corpo da tela. Ele organiza os componentes do layout.
+
+### Aplicações
+Ideal para construir a estrutura padrão de telas, proporcionando uma área para a navegação, cabeçalho e conteúdo centralizado.
+
+### Como usar
+```dart
+Scaffold(
+  appBar: AppBar(
+    title: const Text("Olá, Usuário 👋"),
+    actions: [
+      IconButton(icon: const Icon(Icons.settings), onPressed: () {}),
+    ],
+  ),
+  body: SingleChildScrollView(
+    padding: const EdgeInsets.all(16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [...],
+    ),
+  ),
+);
+```
+
+## 3. **ListView**
+
+### Descrição
+O `ListView` é um widget usado para exibir listas de itens de maneira rolável, vertical ou horizontal.
+
+### Aplicações
+Ideal para exibir coleções de itens como listas de músicas, álbuns, ou outras coleções dinâmicas de dados.
+
+### Como usar
+```dart
+ListView(
+  scrollDirection: Axis.horizontal,
+  children: albums
+      .map((album) => AlbumCard(
+            album: album,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => MusicPlayerScreen(
+                    imageUrl: album['image']!,
+                    title: album['title']!,
+                    artist: album['artist']!,
+                  ),
+                ),
+              );
+            },
+          ))
+      .toList(),
+);
+```
+
+## 4. **GestureDetector**
+
+### Descrição
+O `GestureDetector` é utilizado para capturar gestos do usuário, como toques ou arrastos. Ele é usado para detectar interações e executar ações com base nelas.
+
+### Aplicações
+Utilizado para tornar widgets interativos, como clicar em um álbum para navegar para outra tela ou realizar alguma ação.
+
+### Como usar
+```dart
+GestureDetector(
+  onTap: onTap,
+  child: Container(
+    width: 140,
+    margin: const EdgeInsets.only(right: 12),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.network(
+            album['image']!,
+            width: 140,
+            height: 140,
+            fit: BoxFit.cover,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          album['title']!,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+        ),
+        Text(
+          album['artist']!,
+          style: const TextStyle(color: Colors.grey, fontSize: 12),
+        ),
+      ],
+    ),
+  ),
+);
+```
+
+## 5. **Slider**
+
+### Descrição
+O `Slider` permite ao usuário ajustar um valor entre um intervalo definido (por exemplo, o tempo de uma música). O valor pode ser alterado por meio de um deslizamento.
+
+### Aplicações
+Ideal para ajustar valores de maneira interativa, como o controle de volume ou o tempo de reprodução de uma música.
+
+### Como usar
+```dart
+Slider(
+  value: 120.0,
+  min: 0.0,
+  max: 240.0,
+  activeColor: Colors.green,
+  inactiveColor: Colors.white24,
+  onChanged: (value) {},
+);
+```
+
+## 6. **Column**
+
+### Descrição
+O `Column` é um widget que organiza seus filhos verticalmente, um abaixo do outro. Ele é amplamente utilizado para layouts lineares em uma direção.
+
+### Aplicações
+Ideal para agrupar elementos que precisam ser exibidos na mesma coluna (verticalmente), como textos e imagens.
+
+### Como usar
+```dart
+Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text(
+      title,
+      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+    ),
+    const SizedBox(height: 4),
+    Text(
+      artist,
+      style: const TextStyle(fontSize: 16, color: Colors.grey),
+    ),
+  ],
+);
+```
+
+## 7. **AppBar**
+
+### Descrição
+O `AppBar` é um componente utilizado para criar a barra superior da tela, onde geralmente são colocados elementos como o título, ícones de navegação e ações.
+
+### Aplicações
+Comumente usado para mostrar o título da tela, botões de navegação e ações como configurações ou login.
+
+### Como usar
+```dart
+AppBar(
+  title: const Text("Olá, Usuário 👋"),
+  actions: [
+    IconButton(icon: const Icon(Icons.settings), onPressed: () {}),
+  ],
+);
+```
+
+## 8. **ClipRRect**
+
+### Descrição
+O `ClipRRect` é usado para cortar um widget com bordas arredondadas. Ele é útil para exibir imagens ou qualquer outro componente com bordas curvadas.
+
+### Aplicações
+Ideal para criar efeitos de bordas arredondadas em imagens, botões ou outros elementos da UI.
+
+### Como usar
+```dart
+ClipRRect(
+  borderRadius: BorderRadius.circular(12),
+  child: Image.network(
+    album['image']!,
+    width: 140,
+    height: 140,
+    fit: BoxFit.cover,
+  ),
+);
+```
+
+## 9. **IconButton**
+
+### Descrição
+O `IconButton` é um widget que exibe um ícone clicável, muito usado para ações rápidas, como navegação, favoritar, etc.
+
+### Aplicações
+Ideal para ações que requerem um botão pequeno e visualmente simples, como avançar para a próxima música ou acessar o menu.
+
+### Como usar
+```dart
+IconButton(
+  icon: const Icon(Icons.skip_next_rounded),
+  iconSize: 40,
+  color: Colors.white,
+  onPressed: () {},
+);
+```
+
+## 10. **Navigator**
+
+### Descrição
+O `Navigator` é utilizado para controlar a pilha de telas (rotas) da aplicação, permitindo navegar entre elas. A navegação pode ser empurrada (push) ou removida (pop) da pilha de telas.
+
+### Aplicações
+Essencial para navegar entre diferentes telas da aplicação, como ir para a tela do player de música ao clicar em um álbum.
+
+### Como usar
+```dart
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (_) => MusicPlayerScreen(
+      imageUrl: album['image']!,
+      title: album['title']!,
+      artist: album['artist']!,
+    ),
+  ),
+);
