@@ -1,8 +1,7 @@
 # Equipe
-
+- Cristopher Oliveira Modesto
 - Gabriel Luiz Boch
 - Rafael da Silva Modesto
-- Cristopher Oliveira Modesto
 
 ## Tutorial: Calculadora de IMC
 ## 1. Scaffold
@@ -450,18 +449,6 @@ Navigator.push(
 ```
 
 ## 
-##Perfeito! Aqui está o conteúdo formatado para o `prova01.md`, seguindo as instruções e com base no código do **Cardápio de Restaurante Japonês**:
-
----
-
-# prova01.md
-
-## Integrantes da Equipe
-- Cristopher Oliveira Modesto  
-- Gabriel Luiz Boch  
-- Rafael da Silva Modesto  
-
----
 
 ## Tutorial: Cardápio de Restaurante Japonês
 
