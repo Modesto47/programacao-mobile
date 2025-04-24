@@ -447,3 +447,173 @@ Navigator.push(
     ),
   ),
 );
+```
+
+## 
+##Perfeito! Aqui está o conteúdo formatado para o `prova01.md`, seguindo as instruções e com base no código do **Cardápio de Restaurante Japonês**:
+
+---
+
+# prova01.md
+
+## Integrantes da Equipe
+- Cristopher Oliveira Modesto  
+- Gabriel Luiz Boch  
+- Rafael da Silva Modesto  
+
+---
+
+## Tutorial: Cardápio de Restaurante Japonês
+
+### 1. `Scaffold`
+
+- **Descrição**: Componente base que estrutura visualmente a tela principal do app, contendo a barra superior (`AppBar`), corpo (`body`) e outros elementos como `drawer` e `bottomNavigationBar`.
+- **Aplicações**: Utilizado como contêiner raiz de qualquer tela no Flutter. Permite criar apps responsivos com padrão de design consistente.
+- **Como usar**:
+  ```dart
+  return Scaffold(
+    appBar: AppBar(title: Text('Cardápio')),
+    body: Container(),
+  );
+  ```
+
+---
+
+### 2. `AppBar`
+
+- **Descrição**: Barra superior fixa que geralmente exibe título, ações e ícones de navegação.
+- **Aplicações**: Ideal para mostrar o nome da página, botões de ação (ex: pesquisa, menu) e botão de voltar.
+- **Como usar**:
+  ```dart
+  AppBar(
+    title: Text('Cardápio Japonês'),
+    centerTitle: true,
+    backgroundColor: Colors.deepOrange,
+  );
+  ```
+
+---
+
+### 3. `ListView.builder`
+
+- **Descrição**: Lista dinâmica e preguiçosa (lazy loading) que carrega apenas os elementos visíveis.
+- **Aplicações**: Essencial para criar listas com muitos itens, como menus, catálogos ou feed de notícias.
+- **Como usar**:
+  ```dart
+  ListView.builder(
+    itemCount: items.length,
+    itemBuilder: (_, index) {
+      return Text(items[index]);
+    },
+  );
+  ```
+
+---
+
+### 4. `GestureDetector`
+
+- **Descrição**: Widget que detecta gestos do usuário, como toques, arrastes e cliques longos.
+- **Aplicações**: Útil para tornar qualquer widget "clicável", como cartões, imagens ou containers.
+- **Como usar**:
+  ```dart
+  GestureDetector(
+    onTap: () {
+      print("Clicado");
+    },
+    child: Container(color: Colors.amber, height: 100),
+  );
+  ```
+
+---
+
+### 5. `Card` + `ListTile`
+
+- **Descrição**: `Card` cria um contêiner com elevação e bordas arredondadas; `ListTile` organiza conteúdo em formato de linha com título, subtítulo, imagem e trailing.
+- **Aplicações**: Usado para exibir informações em formato de cartão (como produtos ou mensagens).
+- **Como usar**:
+  ```dart
+  Card(
+    child: ListTile(
+      leading: Icon(Icons.food_bank),
+      title: Text('Sushi Especial'),
+      subtitle: Text('R\$ 28.90'),
+      trailing: ElevatedButton(onPressed: () {}, child: Text('Adicionar')),
+    ),
+  );
+  ```
+
+---
+
+### 6. `Expanded`
+
+- **Descrição**: Expande o widget filho para preencher o espaço disponível dentro de uma `Column`, `Row` ou `Flex`.
+- **Aplicações**: Perfeito para garantir que o conteúdo utilize toda a altura/largura disponível.
+- **Como usar**:
+  ```dart
+  Expanded(
+    child: ListView(children: [...]),
+  );
+  ```
+
+---
+
+### 7. `Image.network`
+
+- **Descrição**: Exibe uma imagem diretamente de uma URL.
+- **Aplicações**: Ideal para mostrar imagens vindas da internet, como fotos de produtos ou perfis.
+- **Como usar**:
+  ```dart
+  Image.network(
+    'https://link-da-imagem.png',
+    errorBuilder: (context, error, stackTrace) => Icon(Icons.error),
+  );
+  ```
+
+---
+
+### 8. `Container` com `BoxDecoration`
+
+- **Descrição**: `Container` com `BoxDecoration` permite estilizar widgets com bordas, cores, imagens e sombras.
+- **Aplicações**: Utilizado para criar cartões customizados, botões estilizados ou qualquer bloco visual personalizado.
+- **Como usar**:
+  ```dart
+  Container(
+    decoration: BoxDecoration(
+      color: Colors.orange[100],
+      border: Border.all(color: Colors.deepOrange),
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: Text('Categoria'),
+  );
+  ```
+
+---
+
+### 9. `setState`
+
+- **Descrição**: Método usado para atualizar o estado da interface após alguma ação (como clique ou alteração de valor).
+- **Aplicações**: Essencial em `StatefulWidgets` para re-renderizar componentes com base em interações do usuário.
+- **Como usar**:
+  ```dart
+  setState(() {
+    selectedCategory = 'Quente';
+  });
+  ```
+
+---
+
+### 10. `Column` e `Row`
+
+- **Descrição**: Widgets de layout que organizam elementos vertical e horizontalmente.
+- **Aplicações**: Usados para empilhar elementos visualmente (como botões, imagens, textos, etc).
+- **Como usar**:
+  ```dart
+  Column(
+    children: [
+      Text('Título'),
+      Row(
+        children: [Icon(Icons.star), Text('Detalhe')],
+      ),
+    ],
+  );
+  ```
