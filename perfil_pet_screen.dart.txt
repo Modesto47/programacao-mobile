@@ -1,0 +1,248 @@
+import 'package:flutter/material.dart';
+
+class PerfilPetScreen extends StatefulWidget {
+  const PerfilPetScreen({super.key});
+
+  @override
+  State<PerfilPetScreen> createState() => _PerfilPetScreenState();
+}
+
+class _PerfilPetScreenState extends State<PerfilPetScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final nomeController = TextEditingController();
+  final racaController = TextEditingController();
+  final idadeController = TextEditingController();
+  final observacoesController = TextEditingController();
+
+  PetGenero? _generoSelecionado;
+  bool _gostaCriancas = false;
+  bool _conviveOutrosAnimais = false;
+  bool _disponivelParaAdocao = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Perfil do Pet'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            tooltip: 'Perfil do Usuário',
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Ação do perfil do usuário!')),
+              );
+            },
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(
+          left: 16,
+          right: 16,
+          top: 16,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+        ),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Cadastro de Perfil do Pet",
+                style: Theme.of(context).textTheme.headlineLarge,
+              ),
+              const SizedBox(height: 8),
+              const Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Preencha os dados do seu pet!",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                ),
+              ),
+              const SizedBox(height: 16),
+              _buildTextField(
+                controller: nomeController,
+                label: "Nome do Pet",
+                icon: Icons.pets,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Informe o nome do pet';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 8),
+              _buildTextField(
+                controller: racaController,
+                label: "Raça",
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Informe a raça do pet';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 8),
+              _buildTextField(
+                controller: idadeController,
+                label: "Idade (em anos)",
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Informe a idade do pet';
+                  }
+                  if (int.tryParse(value) == null || int.parse(value) < 0) {
+                    return 'Idade inválida';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 8),
+              _buildTextField(
+                controller: observacoesController,
+                label: "Observações",
+                maxLines: 3,
+              ),
+              const SizedBox(height: 16),
+              _buildGeneroSection(),
+              const SizedBox(height: 16),
+              _buildPreferenciasSection(),
+              const SizedBox(height: 16),
+              _buildAdocaoSwitch(),
+              const SizedBox(height: 16),
+              _buildActions(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    IconData? icon,
+    TextInputType keyboardType = TextInputType.text,
+    int maxLines = 1,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: icon != null ? Icon(icon) : null,
+        border: const OutlineInputBorder(),
+      ),
+      keyboardType: keyboardType,
+      maxLines: maxLines,
+      textInputAction: TextInputAction.next,
+      validator: validator,
+    );
+  }
+
+  Widget _buildGeneroSection() {
+    return Card(
+      child: Column(
+        children: [
+          const Text(
+            "Gênero do Pet",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
+          RadioListTile<PetGenero>(
+            title: const Text("Macho"),
+            value: PetGenero.macho,
+            groupValue: _generoSelecionado,
+            onChanged: (value) {
+              setState(() {
+                _generoSelecionado = value;
+              });
+            },
+          ),
+          RadioListTile<PetGenero>(
+            title: const Text("Fêmea"),
+            value: PetGenero.femea,
+            groupValue: _generoSelecionado,
+            onChanged: (value) {
+              setState(() {
+                _generoSelecionado = value;
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPreferenciasSection() {
+    return Card(
+      child: Column(
+        children: [
+          const Text(
+            "Preferências de Convivência",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
+          CheckboxListTile(
+            title: const Text("Gosta de crianças"),
+            value: _gostaCriancas,
+            onChanged: (value) {
+              setState(() {
+                _gostaCriancas = value ?? false;
+              });
+            },
+          ),
+          CheckboxListTile(
+            title: const Text("Convive bem com outros animais"),
+            value: _conviveOutrosAnimais,
+            onChanged: (value) {
+              setState(() {
+                _conviveOutrosAnimais = value ?? false;
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAdocaoSwitch() {
+    return SwitchListTile(
+      title: const Text("Disponível para adoção"),
+      value: _disponivelParaAdocao,
+      onChanged: (value) {
+        setState(() {
+          _disponivelParaAdocao = value;
+        });
+      },
+    );
+  }
+
+  Widget _buildActions() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Dados salvos com sucesso!")),
+              );
+            }
+          },
+          child: const Text("Salvar"),
+        ),
+        OutlinedButton(
+          onPressed: () {
+            nomeController.clear();
+            racaController.clear();
+            idadeController.clear();
+            observacoesController.clear();
+          },
+          child: const Text("Limpar 🔁"),
+        ),
+      ],
+    );
+  }
+}
+
+enum PetGenero { macho, femea }
